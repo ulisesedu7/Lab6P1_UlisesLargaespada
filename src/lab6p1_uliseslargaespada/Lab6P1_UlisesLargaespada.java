@@ -70,7 +70,57 @@ public class Lab6P1_UlisesLargaespada {
     
     // Metodo para el menu el juego de la vida
     public static void juegoDeLaVida() {
+        System.out.println("Bienvenido al juego de la vida!");
+        System.out.println("En este programa recorrera un tablero que tendra eventos para su vida");
         
+        String[][] tablero = tableroVida();
+        // contadores
+        int posiciones = 0;
+        int dado = 0;
+                
+        // Entrar a un while para jugar mientras las posiciones totales no sean mayor a 64
+        while(posiciones <= 64) {
+            dado = new Random().nextInt((6 - 1) + 1) + 1;
+            
+            // llamar metodo para imprimir tablero con el valor del momento
+            imprimirMatrizLetras(tablero);
+            
+            // Metodo para comparar posicion del dado y actualizar la matriz
+            tablero = actualizarTableroVida(tablero, dado);
+            
+            posiciones += dado;
+        }
+
+        System.out.println();
+    }
+    
+    // Metodo para crear tablero
+    public static String[][] tableroVida() {
+        String[][] tablero = new String[8][8];
+        
+        // Rellenar tablero
+        for(int row = 0; row < tablero.length; row += 1) {
+            for(int col = 0; col < tablero[row].length; col += 1) {
+                tablero[row][col] = " ";
+            }
+        }
+        
+        // Iniciar P en el primer valor
+        tablero[0][0] = "P";
+        
+        return tablero;
+    }
+    
+    // Metodo para actualizar matriz con dado respectivo
+    public static String[][] actualizarTableroVida(String[][] tableroVida, int dado) {
+        String[][] tablero = tableroVida;
+        
+        // contadores
+        int dinero = 0;
+        int vida = 0;
+        
+        
+        return tablero;
     }
     
     // Metodo para el menu del juego piedra papel o tijera
@@ -78,29 +128,45 @@ public class Lab6P1_UlisesLargaespada {
         // Initialize scanner
         Scanner entry = new Scanner(System.in);
         
+        // Initialize user entry
+        int user = 0;
+        
         // Iniciar matriz con resultados
         int[][] matrizTablero ={
-            {7, 0, 2, 0, 4},
-            {0, 7, 1, 3, 1},
-            {2, 1, 7, 2, 4},
-            {0, 3, 2, 7, 3},
-            {4, 1, 4, 3, 7},
+            {5, 0, 2, 0, 4},
+            {0, 5, 1, 3, 1},
+            {2, 1, 5, 2, 4},
+            {0, 3, 2, 5, 3},
+            {4, 1, 4, 3, 5},
         };
         
         System.out.println("Bienvenido al ejercicio de piedra, papel, tijera, lizard o spock");
         System.out.println("En este juego jugara contra la maquina");
         
-        // Mostrar opciones
-        System.out.println("Elija el numero de la opcion que escogera: ");
-        System.out.println("0 - Tijera");
-        System.out.println("1 - Papel");
-        System.out.println("2 - Roca");
-        System.out.println("3 - Lizard");
-        System.out.println("4 - Spock");
+        // Imprimir matriz para mostrar las relaciones
+        mostrarDiagrama(matrizTablero);
         
-        // Pedir entrada
-        int user = entry.nextInt();
-        mostrarEleccion(user, 1);
+        // Mostrar opciones
+        do {
+            System.out.println("Elija el numero de la opcion que escogera: ");
+            System.out.println("0 - Tijera");
+            System.out.println("1 - Papel");
+            System.out.println("2 - Roca");
+            System.out.println("3 - Lizard");
+            System.out.println("4 - Spock");
+        
+            // Pedir entrada
+            user = entry.nextInt();
+            mostrarEleccion(user, 1);
+            
+            if(user >= 0 && user <= 4) {
+                break;
+            } else {
+                System.out.println("Por favor ingrese una de las opciones anteriores");
+                System.out.println();
+            }
+        } while(true);
+        
         
         int maquina = new Random().nextInt(5);
         mostrarEleccion(maquina, 2);
@@ -114,12 +180,47 @@ public class Lab6P1_UlisesLargaespada {
         System.out.println();
     }
     
+    // Metodo para mostrar Matriz con el diagrama
+    public static void mostrarDiagrama(int[][] matrizDiagrama) {
+        System.out.println("Esta es la relacion par saber cual le gana a cual");
+        // Iniciar array con nombres
+        String[] arrayNombres = {"Tijera", "Papel", "Roca", "Lizard", "Spock", "Tie"};
+        
+        System.out.println("");
+        
+        // For para msotrar tablero
+        System.out.print("        ");
+        for(int i = 0; i < arrayNombres.length - 1; i += 1) {
+            System.out.print(" " + arrayNombres[i] + " ");
+        }
+        
+        System.out.println("");
+                
+        for(int row = 0; row < matrizDiagrama.length; row += 1) {
+            
+            System.out.print(" " + arrayNombres[row] + " [");
+            
+            for(int col = 0; col < matrizDiagrama[row].length; col += 1) {
+                int value = matrizDiagrama[row][col];
+                
+                if(col == matrizDiagrama[row].length - 1) {
+                    System.out.print(arrayNombres[value]);
+                } else {
+                    // System.out.print(arrayNombres[value]);
+                    System.out.print(arrayNombres[value] + " - ");
+                }
+            }
+            System.out.println("]");
+        }        
+        System.out.println();
+    }
+    
     // Metodo para comparar entradas
     public static void compararEntradas(int user, int maq, int result) {
         if(result == maq) {
             System.out.println("La maquina gana!");
         } else if (result == user) {
-            System.out.println("EL jugador gana!");
+            System.out.println("El usuario gana!");
         } else {
             System.out.println("Fue un empate!");
         }
